@@ -131,7 +131,7 @@ FIT WITH DISKLESS PMS MODELS
   
 ### NEXT STEPS:
   (I) results_pms is starting point for advanced analysis of the PMS model results. See phrd_age_analysis_procedure.txt.
-  (II) Sources that were poorly fit by "naked" PMS models may be YSOs. Follow our recipe sedfitting_procedure_xyso.txt to fit YSO models from Robitaille (2017) to the sources in . 
+  (II) Sources that were poorly fit by "naked" PMS models may be YSOs. Follow our recipe sedfitting_procedure_xyso.txt to fit YSO models from Robitaille (2017) to the sources in xpms.fitinfo_bad. 
 
 
 END OF RECIPE

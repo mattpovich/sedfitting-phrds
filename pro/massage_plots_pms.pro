@@ -17,7 +17,7 @@ pro massage_plots_pms,target_dir, sourcelist=sourcelist, mass_offset1=mass_offse
      ;Get ages and age distributions
      mad_hist2_pms, target_dir, agebins, massbins, age_hist, mass_hist, age, age_err, sourcelist=sourcelist,restrict=3, region_name=region_name, offset=mass_offset1,age_offset=age_offset
      age_iso = [age,age_err]
-     
+
      ;Get mass functions using isochronal ages and PLOT
      mad_hist2_pms, target_dir, agebins, massbins, age_hist, mass_hist, age, age_err, sourcelist=sourcelist,restrict=3, region_name=region_name, offset=mass_offset2,age_offset=age_offset,/input_age,age_iso=age_iso
   

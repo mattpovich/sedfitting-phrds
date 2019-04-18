@@ -318,10 +318,10 @@ endif
             endif 
          endif else begin
             cgcontour,probhrd,xt/1.e6,yl,xtitle='Age [Myr]',ytitle='Mass [M'+sunsymbol()+']',title=strmid(names[isrc],0,strlen(names[isrc])-4),levels=ilevs,/fill,/xsty,/ysty,xthick=6,ythick=6,charth=2,/xlog,/ylog,xr=[parxr],yr=paryr,charsize=0.8
-            cgaxis,parxr[0],paryr[0],/xsty,color='white',xtickformat='(A1)',xth=6,/xlog 
-            cgaxis,parxr[0],paryr[1],/xsty,color='white',xtickformat='(A1)',xth=6,xaxis=1,/xlog
-            cgaxis,parxr[0],paryr[0],/ysty,color='white',ytickformat='(A1)',yth=6,yaxis=0,/ylog
-            cgaxis,parxr[1],paryr[0],/ysty,color='white',ytickformat='(A1)',yth=6,yaxis=1,/ylog
+            cgaxis,parxr[0],paryr[0],/xsty,color=255,xtickformat='(A1)',xth=6,/xlog 
+            cgaxis,parxr[0],paryr[1],/xsty,color=255,xtickformat='(A1)',xth=6,xaxis=1,/xlog
+            cgaxis,parxr[0],paryr[0],/ysty,color=255,ytickformat='(A1)',yth=6,yaxis=0,/ylog
+            cgaxis,parxr[1],paryr[0],/ysty,color=255,ytickformat='(A1)',yth=6,yaxis=1,/ylog
 ;Overplot ZAMS
             oplot_siess_zams,color=0,thick=6
             oplot_bm_zams,color=0,thick=5
@@ -364,7 +364,7 @@ endif
 
 
 ;Cumulative HRD -- trivial!
-  cumHRD = total(hrd,3)
+  cumHRD = total(hrd,3,/nan)
   if not keyword_set(mad) then begin
      xbins = alog10(xt)
      ybins = alog10(yl)
@@ -433,20 +433,20 @@ endif
         cgtext, xstarcountpos, 0.2,numstars+' stars', color=193, charsize=2, charthick=6
         cgtext, 0.15,15, 'ZAMS', color=255, charsize=1.75, charthick=5
 ;Overplot ZAMS
-        oplot_siess_zams,color=0,thick=10
-        oplot_bm_zams,color=0,thick=10
-        oplot_siess_zams,color=255,thick=8
-        oplot_bm_zams,color=255,thick=8
+        cgoplot_siess_zams,color=0,thick=10
+        cgoplot_bm_zams,color=0,thick=10
+        cgoplot_siess_zams,color=255,thick=8
+        cgoplot_bm_zams,color=255,thick=8
 ;Overplot disk boundary lines
         cgoplot,replicate(3.,2),[0.1,1],co=0,th=10,li=1
         cgoplot,[3.,0.1],[1.,10.],co=0,th=10,li=1
         cgoplot,replicate(3.,2),[0.1,1],co=255,th=8,li=1
         cgoplot,[3.,0.1],[1.,10.],co=255,th=8,li=1
 
-;        axis,xr[0],yr[0],/xsty,color=255,xtickformat='(A1)',xth=8,/xlog 
-;        axis,xr[0],yr[1],/xsty,color=255,xtickformat='(A1)',xth=8,xaxis=1,/xlog
-;        axis,xr[0],yr[0],/ysty,color=255,ytickformat='(A1)',yth=8,yaxis=0,/ylog
-;        axis,xr[1],yr[0],/ysty,color=255,ytickformat='(A1)',yth=8,yaxis=1,/ylog
+        cgaxis,xr[0],yr[0],/xsty,color='white',xtickformat='(A1)',xth=8,/xlog 
+        cgaxis,xr[0],yr[1],/xsty,color='white',xtickformat='(A1)',xth=8,xaxis=1,/xlog
+        cgaxis,xr[0],yr[0],/ysty,color='white',ytickformat='(A1)',yth=8,yaxis=0,/ylog
+        cgaxis,xr[1],yr[0],/ysty,color='white',ytickformat='(A1)',yth=8,yaxis=1,/ylog
      endelse 
 
 ;Overplot best-fit models, if desired
