@@ -145,5 +145,3 @@ Use IDL to make a new fitter data file and SAOImage ds9 regionfile containing on
   1. The files within the `results_xpms` directory are the starting point for advanced analysis of the PMS model results. Use `phrd_age_analysis_procedure` to create probabilistic HR diagrams plus mass and age distributions for these sources.
   1. Sources that were poorly fit by "naked" PMS models may be YSOs with circumstellar disks/envelopes. *COMING SOON:* a recipe `sedfitting_procedure_xyso` to fit YSO models from Robitaille (2017) to the sources in `xpms.fitinfo_bad `. 
 
-
-# END OF RECIPE
