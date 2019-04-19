@@ -1,4 +1,6 @@
-Authors: M. S. Povich, J. T. Maldonado, & E. H. Nunez
+# `phrd_age_analysis_procedure`
+
+**Authors: M. S. Povich (@mattpovich), J. T. Maldonado, & E. H. Nuñez**
 
 Step-by-step guide to producing pHRDs and mass-age histograms
 This recipe must be run AFTER the SED fitting procedure, see
