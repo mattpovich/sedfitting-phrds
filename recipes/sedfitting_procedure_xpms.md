@@ -119,13 +119,16 @@ Split the output into well-fit versus poorly-fit. I *strongly recommend* using c
   	plot('xpms.fitinfo_good', 'plots_xpms_good') 
   	plot('xpms.fitinfo_bad', 'plots_xpms_bad')
 
+Write SED fit parameters to a text file:
 
-  from sedfitter import write_parameters
-  write_parameters('xpms.fitinfo_good','pars_xpms_good.txt',select_format=('A',-1))
+**>>>**
 
-## Make useful data products from the SED fitting results
+	from sedfitter import write_parameters
+  	write_parameters('xpms.fitinfo_good','pars_xpms_good.txt',select_format=('A',-1))
 
-Use IDL to make a new fitter data file and SAOImage ds9 regionfile containing only the well-fit sources, and create the `results_xpms` directory contining model fitting results as IDL save files.
+## Make data products from the SED fitting results
+
+Use IDL to make a new fitter data file and SAOImage ds9 regionfile containing only the well-fit sources. Create the `results_xpms` directory contining model fitting results as IDL save files.
   
   **IDL>**
   
@@ -138,8 +141,9 @@ Use IDL to make a new fitter data file and SAOImage ds9 regionfile containing on
   	pms_pars2idl,parfile_good,target_pms,data_parent=data_parent,filter='F1'	
   
 ## NEXT STEPS:
-  (I) results_pms is starting point for advanced analysis of the PMS model results. See `phrd_age_analysis_procedure` for an instructional recipe.
-  (II) Sources that were poorly fit by "naked" PMS models may be YSOs. Follow our recipe `sedfitting_procedure_xyso` to fit YSO models from Robitaille (2017) to the sources in `xpms.fitinfo_bad ` (coming soon). 
+
+  1. The files within the `results_xpms` directory are the starting point for advanced analysis of the PMS model results. Use `phrd_age_analysis_procedure` to create probabilistic HR diagrams plus mass and age distributions for these sources.
+  1. Sources that were poorly fit by "naked" PMS models may be YSOs with circumstellar disks/envelopes. *COMING SOON:* a recipe `sedfitting_procedure_xyso` to fit YSO models from Robitaille (2017) to the sources in `xpms.fitinfo_bad `. 
 
 
 # END OF RECIPE
