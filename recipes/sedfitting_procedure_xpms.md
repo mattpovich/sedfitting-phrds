@@ -30,36 +30,41 @@ Download the custom `models_pms' SED model set from **GET ZENODO URL**
 
     TARGET='m17'  # python EXAMPLE. Choose your own target name.
 
+
+
 **%**
 
     setenv TARGET m17  # tcsh EXAMPLE. Choose your own target name (must match above)
 
-It is a good idea to name your working directory `TARGET` and then cd into it in both shells, e.g. `cd ~/sedfitting/m17`
+
+
+It is a good idea to name your working directory `$TARGET/sedfitter`, e.g. (in `tcsh`):
 
 **%**
 
-    mkdir sedfitter
-    cd sedfitter 
+    mkdir -p $TARGET/sedfitter
+    cd $TARGET/sedfitter
+
 
 
 # PREPARE SOURCE PHOTOMETRY FOR SED FITTING
 
-You are responsible for assembling a sample of young stellar sources with a distance and extinction distribution that can be reasonably well constrained. My own preferred method is X-ray selection plus parallax-based cleaning of remaining field-star contaminants using Gaia (see Povich et al. 2019 for details).
+You are responsible for assembling a sample of young stellar sources with distributions of distance and extinction that can be reasonably well constrained by independent metrics. My own preferred method is X-ray selection plus parallax-based cleaning of remaining field-star contaminants using Gaia DR2 (see Povich et al. 2019 for details).
 
-Prepare the input fitter data file following the guidelines at https://sedfitter.readthedocs.io/en/stable/data.html. This recipe assumes you have a total of n=10 wavelengths/filters, in this order:
+Prepare the input fitter data file following the guidelines at https://sedfitter.readthedocs.io/en/stable/data.html. This recipe assumes you have a total of `n=10` wavelengths/filters, in this order:
 
-UKIDSS/VVV: JHK (filters 1-3)
-2MASS:  JHKs (filters 4-6)
-Spitzer/IRAC: [3.6], [4.5], [5.8], [8.0] (filters 7-10)
+* UKIDSS: *JHK* (filters 1-3)
+* 2MASS:  *JHKs* (filters 4-6)
+* *Spitzer*/IRAC: [3.6], [4.5], [5.8], [8.0] (filters 7-10)
 
-Other surveys could be substituted (e.g. WISE for Spitzer/IRAC), but the ORDER that photometry points appear in the data file should not be changed.
+Other surveys could be substituted (e.g. *WISE* for *Spitzer*/IRAC or VVV for UKIDSS), but the ORDER that photometry points appear in the data file should not be changed. If available, you may also use VVV/UKIDSS *YZ*
 
 Data file name: data_xir
 
 Estimate the maximum reddening to stars in the sample using the J-H vs. H-K color-color diagram.
 
-%
-IDL>
+**IDL>**
+
    	data = 'data_xir'
 	twomass = 0   ; Set to 1 if your JHKs colors are on the 2MASS system
 	if not twomass then mk = 1
