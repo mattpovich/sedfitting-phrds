@@ -26,7 +26,13 @@ containing IDL save files of the SED model parameters for each source in the tar
 Get Tom Robitaille's sedfitter software and install it following the instructions
 at http://sedfitter.readthedocs.io/en/stable/installation.html
 
-Download the custom `models_pms' SED model set from **GET ZENODO URL**
+Download the custom `models_pms` SED model set from **GET ZENODO URL**
+
+Make sure you have the following libraries on your IDL path:
+
+* [IDL astronomy users library](https://github.com/wlandsman/IDLAstro)
+* [IDL coyote library](https://github.com/idl-coyote/coyote)
+* [IDL library bundled with this recipe](https://github.com/mattpovich/sedfitting-phrds)
 
 **>>>**
 
