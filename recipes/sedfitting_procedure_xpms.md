@@ -1,5 +1,7 @@
 # `sedfitting_procedure_xpms`
 
+**Authors: M. S. Povich (@mattpovich) & T. P. Robitaille (@sedfitter)**
+
 ## Description
 This recipe guides you through the steps of performing a basic SED fitting classification for the combined Spitzer, 2MASS, and UKIDSS counterpart SEDs to X-ray sources in a specified target field. The final science product is a directory called `results_xpms`
 containing IDL save files of the SED model parameters for each source in the target field.
