@@ -31,11 +31,9 @@ Download the custom `models_pms' SED model set from **GET ZENODO URL**
     TARGET='m17'  # python EXAMPLE. Choose your own target name.
 
 
-
 **%**
 
     setenv TARGET m17  # tcsh EXAMPLE. Choose your own target name (must match above)
-
 
 
 It is a good idea to name your working directory `$TARGET/sedfitter`, e.g. (in `tcsh`):
@@ -46,8 +44,7 @@ It is a good idea to name your working directory `$TARGET/sedfitter`, e.g. (in `
     cd $TARGET/sedfitter
 
 
-
-# PREPARE SOURCE PHOTOMETRY FOR SED FITTING
+## PREPARE SOURCE PHOTOMETRY FOR SED FITTING
 
 You are responsible for assembling a sample of young stellar sources with distributions of distance and extinction that can be reasonably well constrained by independent metrics. My own preferred method is X-ray selection plus parallax-based cleaning of remaining field-star contaminants using Gaia DR2 (see Povich et al. 2019 for details).
 
@@ -59,9 +56,11 @@ Prepare the input fitter data file following the guidelines at https://sedfitter
 
 Other surveys could be substituted (e.g. *WISE* for *Spitzer*/IRAC or VVV for UKIDSS), but the ORDER that photometry points appear in the data file should not be changed. If available, you may also use VVV/UKIDSS *YZ*
 
-Data file name: data_xir
+**Name the fitter data file `data_xir`.**
 
-Estimate the maximum reddening to stars in the sample using the J-H vs. H-K color-color diagram.
+## Estimate the maximum reddening to stars in the sample 
+
+Plot and visually inspect the *J – H* vs. *H - K* color-color diagram of the source population:
 
 **IDL>**
 
@@ -73,70 +72,74 @@ Estimate the maximum reddening to stars in the sample using the J-H vs. H-K colo
 	magfromdata,data,2,k,nwav=10,mk=mk
 	plot_nircc_rv,j,h,k,twomass=twomass
 	
-;Estimate the maximum reddening in Av by comparing the locus
-  of stars to the reddening vectors (marked at intervals of Av=5
-  mag). Note the value that you used.
+Estimate the maximum reddening in *Av* magnitudes  by comparing the locus
+  of stars to the reddening vectors (marked at intervals of *Av* = 5
+  mag). Record the maximum value you estimated. *OPTIONAL: estimate and record a minimum Av if this is not zero.*
   
-=============================================================================
-FIT WITH DISKLESS PMS MODELS
+## FIT WITH DISKLESS PMS MODELS
 
-  >>>
-  python
-  from astropy import units as u
-  from sedfitter import fit
-  from sedfitter.extinction import Extinction
+**Preliminary step:** The two extinction laws that I use are packaged in the `ex_law` subdirectory of this repository. Place a copy of `ex_law_gl.par` into your `$TARGET/sedfitter` directory.
+
+**>>>**
+
+	python
+ 	from astropy import units as u
+  	from sedfitter import fit
+  	from sedfitter.extinction import Extinction
 
 	# Define path to models
-  model_dir_pms = <your path here> + '/models_pms'
+  	model_dir_pms = <your path here> + '/models_pms'
 
-	# Read in extinction law. The two extinction laws that I used are packaged in the ex_law subdirectory of this repository. COPY ex_law_gl.par into your sedfitter directory!
+	# Read in extinction law. 
+	extinction = Extinction.from_file('ex_law_gl.par', columns=[0, 3], wav_unit=u.micron, chi_unit=u.cm**2 / u.g)
 
-  extinction = Extinction.from_file('ex_law_gl.par', columns=[0, 3], wav_unit=u.micron, chi_unit=u.cm**2 / u.g)
+  	# Define filters and apertures. 
+	filters = ['UDSSJ', 'UDSSH', 'UDSSK', '2J', '2H', '2K', 'I1', 'I2', 'I3', 'I4']
+  	apertures = [1.5, 1.5, 1.5, 3., 3., 3., 3., 3., 3., 3.] * u.arcsec
+	
+Apertures are tricky, but the SED `models_pms` set is aperture-independent, so it doesn't really matter here! Note these filter names are *specific* to the pre-convolved model SEDs and must match the filenames in the `models_pms/convolved` directory. The example above is for the combination of UKIDSS, 2MASS, and IRAC filters. Vista filter convolutions are also available, named `VVV[ZYJHK]`.
 
-  # Define filters and apertures. Apertures are tricky but the PMS models are aperture-independent, so it doesn't really matter!
-  # Note these filter names are SPECIFIC to the pre-convolved model SEDs. These names must match the filenames in the models_pms/convolved directory.
-  # The example below is for UKIDSS, 2MASS and IRAC. VISTA[ZYJHK] are also available.
+Make sure the `distance_range` parameter is set to the minimum and maximum distance (in kpc) to your target source population, and the `av_range` reflects the maximum (and minimum if nonzero) extinction estimated from the *JHK* color-color diagram above. Then run the `sedfitter`:
 
-  filters = ['UDSSJ', 'UDSSH', 'UDSSK', '2J', '2H', '2K', 'I1', 'I2', 'I3', 'I4']
-  apertures = [1.5, 1.5, 1.5, 3., 3., 3., 3., 3., 3., 3.] * u.arcsec
+**>>>**
+	fit('data_xir', filters, apertures, model_dir_pms, 'xpms.fitinfo', n_data_min=4, extinction_law=extinction, distance_range=[1.5, 2.] * u.kpc, av_range=[0., 25.], output_format=('F',1))
 
-# Fit!
-# Make sure the distance_range parameter is set to the minimum and maximum distance, in kpc, to your target source population, and the av_range reflects the maximum extinction estimated from the JHK color-color diagram above.
+Split the output into well-fit versus poorly-fit. I *strongly recommend* using chi^2/Ndata = 1 as the cutoff for well-fit models from the `models_pms` set, see Povich et al. (2019).
 
-  fit('data_xir', filters, apertures, model_dir_pms, 'xpms.fitinfo', n_data_min=4, extinction_law=extinction, distance_range=[1.5, 2.] * u.kpc, av_range=[0., 25.], output_format=('F',1))
+**>>>**
+  
+  	from sedfitter import filter_output
+ 	filter_output('xpms.fitinfo', cpd=1.) 
 
-###Split the output into well-fit versus poorly-fit. I strongly recommend using the chi^2/Ndata = 1 cutoff for well-fit models, see Povich et al. (2019).
+*OPTIONAL: Plot up some SEDs for sanity checks. I personally find plotting the `*bad` SEDs to be more informative than the `*good`.*
 
-  >>>
-  from sedfitter import filter_output
-  filter_output('xpms.fitinfo', cpd=1.) 
+**>>>**
 
-  ### OPTIONAL Plot up some SEDs for sanity checks.
-  ##CANNOT DO THIS AT PRESENT, SED .fits files for PMS models are in the wrong format for the python fitter!##
-  >>>
-  from sedfitter import plot
-  plot('xpms.fitinfo_good', 'plots_xpms_good') 
-  plot('xpms.fitinfo_bad', 'plots_xpms_bad')
+  	from sedfitter import plot
+  	plot('xpms.fitinfo_good', 'plots_xpms_good') 
+  	plot('xpms.fitinfo_bad', 'plots_xpms_bad')
 
-  ######
 
   from sedfitter import write_parameters
   write_parameters('xpms.fitinfo_good','pars_xpms_good.txt',select_format=('A',-1))
 
-  # Make fitter data file and SAOImage ds9 regionfile of the well-fit sources, and create results_xpms directory contining model fitting results as IDL save files.
-  %
-  IDL>
-  parfile_good = 'pars_xpms_good.txt' 
-  data_parent='data_xir'
-  fitinfo2data,parfile_good,data_parent,'data_xpms_good'
-  ds9regfromdata,'data_xpms_good','data_xpms_good.reg',color='dodgerblue'
+## Make useful data products from the SED fitting results
 
-  target_pms ='results_xpms'
-  pms_pars2idl,parfile_good,target_pms,data_parent=data_parent,filter='F1'	
+Use IDL to make a new fitter data file and SAOImage ds9 regionfile containing only the well-fit sources, and create the `results_xpms` directory contining model fitting results as IDL save files.
   
-### NEXT STEPS:
-  (I) results_pms is starting point for advanced analysis of the PMS model results. See phrd_age_analysis_procedure.txt.
-  (II) Sources that were poorly fit by "naked" PMS models may be YSOs. Follow our recipe sedfitting_procedure_xyso.txt to fit YSO models from Robitaille (2017) to the sources in xpms.fitinfo_bad. 
+  **IDL>**
+  
+  	parfile_good = 'pars_xpms_good.txt' 
+  	data_parent='data_xir'
+  	fitinfo2data,parfile_good,data_parent,'data_xpms_good'
+  	ds9regfromdata,'data_xpms_good','data_xpms_good.reg',color='dodgerblue'
+
+  	target_pms ='results_xpms'
+  	pms_pars2idl,parfile_good,target_pms,data_parent=data_parent,filter='F1'	
+  
+## NEXT STEPS:
+  (I) results_pms is starting point for advanced analysis of the PMS model results. See `phrd_age_analysis_procedure` for an instructional recipe.
+  (II) Sources that were poorly fit by "naked" PMS models may be YSOs. Follow our recipe `sedfitting_procedure_xyso` to fit YSO models from Robitaille (2017) to the sources in `xpms.fitinfo_bad ` (coming soon). 
 
 
-END OF RECIPE
+# END OF RECIPE
