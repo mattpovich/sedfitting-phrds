@@ -1,45 +1,45 @@
-sedfitting_procedure_xpms.txt
-Original 2011-11-22 by M. S. Povich
-UPDATED to use PYTHON sedfitter software 2018-08-28 by M. S. Povich
+# `sedfitting_procedure_xpms`
 
-PRODUCTION (V1.0)  2019-04-17 M. S. Povich
+## Description
+This recipe guides you through the steps of performing a basic SED fitting classification for the combined Spitzer, 2MASS, and UKIDSS counterpart SEDs to X-ray sources in a specified target field. The final science product is a directory called `results_xpms`
+containing IDL save files of the SED model parameters for each source in the target field.
 
-This recipe guides you through the steps of performing a basic SED fitting classification for the combined Spitzer, 2MASS, and UKIDSS COUNTERPART SEDs to X-ray sources in a specified target field.
+## Version History
 
-The final science product is a directory called results_xpms
-containing IDL save files of the SED model parameters for each source
-in the population.
+* Original `sedfitting_procedure_xpms.txt` – 2011-11-22 by M. S. Povich
+* Updated to use  [`python sedfitter`](https://github.com/astrofrog/sedfitter)  – 2018-08-28 by M. S. Povich
+* CURRENT (v1.0)  2019-04-17 M. S. Povich
 
-=============================================================================
-INITIAL SETUP 
+## Important Notes 
+*This recipe requires both `python` and `IDL`. I have verified the software using `Python 3.6.5` run in the `bash` shell and `IDL 8.7.1` in the `tcsh` shell via the MacOS X 10.13.6 Terminal app. I have NOT yet tested it on other platforms or other software versions, but I suspect `python` may be pickier about version compatibility than `IDL` or MacOS X.*
+
+ I recommend using two different terminal windows simultaneously, one in `bash` and the other in `tcsh`. The correct shell in which to execute each block of command is indicated as follows:
+ 
+  * `python` command blocks are preceded by **>>>**
+  * `tcsh/IDL` command blocks are preceded by **%/IDL>**
+
+
+## INITIAL SETUP 
 
 Get Tom Robitaille's sedfitter software and install it following the instructions
 at http://sedfitter.readthedocs.io/en/stable/installation.html
 
-Download the custom pms SED model set (constructed using Siess et al. 2000 and Bernasconi & Maeder 1996 evolutionary tracks) from <ZENODO URL>.
+Download the custom `models_pms' SED model set from **GET ZENODO URL**
 
-#I am using this version of python, which I need to
- run in a bash shell:
+**>>>**
 
- Python 3.6.5 :: Anaconda, Inc.
- 
- IDL commands will need to be executed in tcsh,
- so we require two different terminal windows open in different shells.
- 
-  ### Python commands/blocks are preceded by ">>>"
-  ### tcsh commands/blocks are preceded by "%"
+    TARGET='m17'  # python EXAMPLE. Choose your own target name.
 
->>>
-TARGET='m17'  #python EXAMPLE. Choose your own target name.
+**%**
 
-%
-setenv TARGET m17  # tcsh EXAMPLE. Choose your own target name (must match above)
+    setenv TARGET m17  # tcsh EXAMPLE. Choose your own target name (must match above)
 
-#It is a good idea to name your working directory after the target and then cd into it in both shells! E.g. ~/sedfitting/m17
+It is a good idea to name your working directory `TARGET` and then cd into it in both shells, e.g. `cd ~/sedfitting/m17`
 
-%
-mkdir sedfitter
-cd sedfitter 
+**%**
+
+    mkdir sedfitter
+    cd sedfitter 
 
 
 # PREPARE SOURCE PHOTOMETRY FOR SED FITTING
