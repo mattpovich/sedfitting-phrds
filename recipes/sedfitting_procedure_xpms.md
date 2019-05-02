@@ -110,7 +110,8 @@ Apertures are tricky, but the SED `models_pms` set is aperture-independent, so i
 Make sure the `distance_range` parameter is set to the minimum and maximum distance (in kpc) to your target source population, and the `av_range` reflects the maximum (and minimum if nonzero) extinction estimated from the *JHK* color-color diagram above. Then run the `sedfitter`:
 
 **>>>**
-	fit('data_xir', filters, apertures, model_dir_pms, 'xpms.fitinfo', n_data_min=4, extinction_law=extinction, distance_range=[1.5, 2.] * u.kpc, av_range=[0., 25.], output_format=('F',1))
+
+    fit('data_xir', filters, apertures, model_dir_pms, 'xpms.fitinfo', n_data_min=4, extinction_law=extinction, distance_range=[1.5, 2.] * u.kpc, av_range=[0., 25.], output_format=('F',1))
 
 Split the output into well-fit versus poorly-fit. I *strongly recommend* using chi^2/Ndata = 1 as the cutoff for well-fit models from the `models_pms` set, see Povich et al. (2019).
 
