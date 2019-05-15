@@ -10,7 +10,7 @@ containing IDL save files of the SED model parameters for each source in the tar
 
 * Original `sedfitting_procedure_xpms.txt` – 2011-11-22 by M. S. Povich
 * Updated to use  [`python sedfitter`](https://github.com/astrofrog/sedfitter)  – 2018-08-28 by M. S. Povich
-* CURRENT (v1.0)  2019-04-17 M. S. Povich
+* CURRENT (v1.0) — 2019-04-17 M. S. Povich
 
 ## Important Notes 
 *This recipe requires both `python` and `IDL`. I have verified the software using `Python 3.6.5` run in the `bash` shell and `IDL 8.7.1` in the `tcsh` shell via the MacOS X 10.13.6 Terminal app. I have NOT yet tested it on other platforms or other software versions, but I suspect `python` may be pickier about version compatibility than `IDL` or MacOS X.*
@@ -56,13 +56,13 @@ It is a good idea to name your working directory `$TARGET/sedfitter`, e.g. (in `
 
 You are responsible for assembling a sample of young stellar sources with distributions of distance and extinction that can be reasonably well constrained by independent metrics. My own preferred method is X-ray selection plus parallax-based cleaning of remaining field-star contaminants using Gaia DR2 (see Povich et al. 2019 for details).
 
-Prepare the input fitter data file following the guidelines at https://sedfitter.readthedocs.io/en/stable/data.html. This recipe assumes you have a total of `n=10` wavelengths/filters, in this order:
+Prepare the input fitter data file following the guidelines at https://sedfitter.readthedocs.io/en/stable/data.html. This pipeline assumes you have a total of `nwav=10` wavelengths/filters, in this order:
 
 * UKIDSS: *JHK* (filters 1-3)
 * 2MASS:  *JHKs* (filters 4-6)
 * *Spitzer*/IRAC: [3.6], [4.5], [5.8], [8.0] (filters 7-10)
 
-Other surveys could be substituted (e.g. *WISE* for *Spitzer*/IRAC or VVV for UKIDSS), but the ORDER that photometry points appear in the data file should not be changed. If available, you may also use VVV/UKIDSS *YZ*
+Other surveys could be substituted (e.g. *WISE* for *Spitzer*/IRAC or VVV for UKIDSS), but the ORDER that photometry points appear in the data file should not be changed. This pipeline also supports adding VVV/UKIDSS *YZ*, if available, in the filters 1 & 2 positions, in which case `nwav=12`.
 
 **Name the fitter data file `data_xir`.**
 
