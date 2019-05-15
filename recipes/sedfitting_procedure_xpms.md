@@ -34,6 +34,8 @@ Make sure you have the following libraries on your IDL path:
 * [IDL coyote library](https://github.com/idl-coyote/coyote)
 * [IDL library bundled with this recipe](https://github.com/mattpovich/sedfitting-phrds)
 
+## TARGET-SPECIFIC SETUP
+
 **>>>**
 
     TARGET='m17'  # python EXAMPLE. Choose your own target name.
@@ -106,7 +108,7 @@ Estimate the maximum reddening in *Av* magnitudes  by comparing the locus
 	
 Apertures are tricky, but the SED `models_pms` set is aperture-independent, so it doesn't really matter here! Note these filter names are *specific* to the pre-convolved model SEDs and must match the filenames in the `models_pms/convolved` directory. The example above is for the combination of UKIDSS, 2MASS, and IRAC filters. Vista filter convolutions are also available, named `VVV[ZYJHK]`.
 
-Make sure the `distance_range` parameter in the `fit()` call below is set to the minimum and maximum distance (in kpc) to your target source population, and the `av_range` reflects the maximum (and minimum if nonzero) extinction estimated from the *JHK* color-color diagram above. Then run the `sedfitter`:
+**Critical:** In the `fit()` call below make sure the `distance_range=[]` parameter  is set to the minimum and maximum distance (in kpc) to your target source population, and the `av_range=[]` reflects the maximum (and minimum if nonzero) extinction estimated from the *JHK* color-color diagram above.
 
 **>>>**
 
