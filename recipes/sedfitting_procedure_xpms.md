@@ -56,7 +56,7 @@ It is a good idea to name your working directory `$TARGET/sedfitter`, e.g. (in `
 
 You are responsible for assembling a sample of young stellar sources with distributions of distance and extinction that can be reasonably well constrained by independent metrics. My own preferred method is X-ray selection plus parallax-based cleaning of remaining field-star contaminants using Gaia DR2 (see Povich et al. 2019 for details).
 
-Prepare the input fitter data file following the guidelines at https://sedfitter.readthedocs.io/en/stable/data.html. This pipeline assumes you have a total of `nwav=10` wavelengths/filters, in this order:
+Prepare the input fitter data file following the guidelines at https://sedfitter.readthedocs.io/en/stable/data.html. This pipeline assumes you have a total of `n=nwav=10` wavelengths/filters, in this order:
 
 * UKIDSS: *JHK* (filters 1-3)
 * 2MASS:  *JHKs* (filters 4-6)
@@ -90,7 +90,6 @@ Estimate the maximum reddening in *Av* magnitudes  by comparing the locus
 
 **>>>**
 
-	python
  	from astropy import units as u
   	from sedfitter import fit
   	from sedfitter.extinction import Extinction
@@ -107,11 +106,12 @@ Estimate the maximum reddening in *Av* magnitudes  by comparing the locus
 	
 Apertures are tricky, but the SED `models_pms` set is aperture-independent, so it doesn't really matter here! Note these filter names are *specific* to the pre-convolved model SEDs and must match the filenames in the `models_pms/convolved` directory. The example above is for the combination of UKIDSS, 2MASS, and IRAC filters. Vista filter convolutions are also available, named `VVV[ZYJHK]`.
 
-Make sure the `distance_range` parameter is set to the minimum and maximum distance (in kpc) to your target source population, and the `av_range` reflects the maximum (and minimum if nonzero) extinction estimated from the *JHK* color-color diagram above. Then run the `sedfitter`:
+Make sure the `distance_range` parameter in the `fit()` call below is set to the minimum and maximum distance (in kpc) to your target source population, and the `av_range` reflects the maximum (and minimum if nonzero) extinction estimated from the *JHK* color-color diagram above. Then run the `sedfitter`:
 
 **>>>**
 
-    fit('data_xir', filters, apertures, model_dir_pms, 'xpms.fitinfo', n_data_min=4, extinction_law=extinction, distance_range=[1.5, 2.] * u.kpc, av_range=[0., 25.], output_format=('F',1))
+    fit('data_xir', filters, apertures, model_dir_pms, 'xpms.fitinfo', n_data_min=4, extinction_law=extinction, 
+    	distance_range=[1.5, 2.] * u.kpc, av_range=[0., 25.], output_format=('F',1))
 
 Split the output into well-fit versus poorly-fit. I *strongly recommend* using chi^2/Ndata = 1 as the cutoff for well-fit models from the `models_pms` set, see Povich et al. (2019).
 
