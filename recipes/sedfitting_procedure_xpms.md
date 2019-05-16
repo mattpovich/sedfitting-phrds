@@ -39,14 +39,10 @@ Make sure you have the following libraries on your IDL path:
 
 ## TARGET-SPECIFIC SETUP
 
-**>>>**
-
-    TARGET='m17'  # python EXAMPLE. Choose your own target name.
+**>>>** `TARGET='m17'  # python EXAMPLE. Choose your own target name.`
 
 
-**%**
-
-    setenv TARGET m17  # tcsh EXAMPLE. Choose your own target name (must match above)
+**%** `setenv TARGET m17  # tcsh EXAMPLE. Choose your own target name (must match above)`
 
 
 It is a good idea to name your working directory `$TARGET/sedfitter`, e.g. (in `tcsh`):
