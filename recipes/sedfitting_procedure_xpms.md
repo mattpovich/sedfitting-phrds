@@ -74,9 +74,10 @@ Plot and visually inspect the *J – H* vs. *H - K* color-color diagram of the s
    	data = 'data_xir'
 	twomass = 0   ; Set to 1 if your JHKs colors are on the 2MASS system
 	if not twomass then mk = 1
-	magfromdata,data,0,j,nwav=10,mk=mk
-	magfromdata,data,1,h,nwav=10,mk=mk
-	magfromdata,data,2,k,nwav=10,mk=mk
+	nwav = 10  ; Set to 12 if ZY bands are included in data file
+	magfromdata,data,0,j,nwav=nwav,mk=mk
+	magfromdata,data,1,h,nwav=nwav,mk=mk
+	magfromdata,data,2,k,nwav=nwav,mk=mk
 	plot_nircc_rv,j,h,k,twomass=twomass
 	
 Estimate the maximum reddening in *Av* magnitudes  by comparing the locus
