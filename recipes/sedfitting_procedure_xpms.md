@@ -3,8 +3,11 @@
 **Authors: M. S. Povich & T. P. Robitaille**
 
 ## Description
-This recipe guides you through the steps of performing a basic SED fitting classification for the combined Spitzer, 2MASS, and UKIDSS counterpart SEDs to X-ray sources in a specified target field. The final science product is a directory called `results_xpms`
-containing IDL save files of the SED model parameters for each source in the target field.
+This recipe guides you through the steps of performing a basic SED fitting classification for the combined Spitzer, 2MASS, and UKIDSS counterpart SEDs to X-ray sources in a specified target field. You will need to assemble a sample of young stellar sources with distributions of distance and extinction that can be reasonably well constrained by independent metrics. My own preferred method is X-ray selection plus parallax-based cleaning of remaining field-star contaminants using Gaia DR2 (see Povich et al. 2019 for details), but other strategies are possible, for example selecting sources based on H-alpha emission lines or Lithium absorption lines. 
+
+If you are interested in *identifying* a sample of YSOs based on IR-excess alone, please see the companion [`sedfitting-ysos` repo](https://github.com/mattpovich/sedfitting-ysos). 
+
+The final science product is a directory called `results_xpms` containing IDL save files of the SED model parameters for each source in the target field.
 
 ## Version History
 
@@ -55,8 +58,6 @@ It is a good idea to name your working directory `$TARGET/sedfitter`, e.g. (in `
 
 
 ## PREPARE SOURCE PHOTOMETRY FOR SED FITTING
-
-You are responsible for assembling a sample of young stellar sources with distributions of distance and extinction that can be reasonably well constrained by independent metrics. My own preferred method is X-ray selection plus parallax-based cleaning of remaining field-star contaminants using Gaia DR2 (see Povich et al. 2019 for details).
 
 Prepare the input fitter data file following the guidelines at https://sedfitter.readthedocs.io/en/stable/data.html. This pipeline assumes you have a total of `n=nwav=10` wavelengths/filters, in this order:
 
@@ -154,5 +155,5 @@ Use IDL to make a new fitter data file and SAOImage ds9 regionfile containing on
 ## NEXT STEPS:
 
   1. The files within the `results_xpms` directory are the starting point for advanced analysis of the PMS model results. Use `phrd_age_analysis_procedure` to create probabilistic HR diagrams plus mass and age distributions for these sources.
-  1. Sources that were poorly fit by "naked" PMS models may be YSOs with circumstellar disks/envelopes. *COMING SOON:* a recipe `sedfitting_procedure_xyso` to fit YSO models from Robitaille (2017) to the sources in `xpms.fitinfo_bad `. 
+  1. Sources that were poorly fit by "naked" PMS models may be YSOs with circumstellar disks/envelopes. Follow the recipe [`sedfitting_procedure_xyso`](https://github.com/mattpovich/sedfitting-ysos/blob/master/recipes/sedfitting_procedure_ysos.md) using the companion [`sedfitting_ysos` repo](https://github.com/mattpovich/sedfitting-ysos) to fit YSO models from [Robitaille (2017)](https://doi.org/10.1051/0004-6361/201425486) to sources in `xpms.fitinfo_bad `. 
 
