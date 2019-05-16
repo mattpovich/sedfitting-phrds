@@ -1,7 +1,8 @@
-;Get single-band IR magnitudes of sources from a specified
+;Get single-band IR magnitudes of detected sources (not upper or lower
+;limits) from a specified
 ;sedfitter data file.
 
-pro magfromdata,data_in,band,mags,nwav=nwav,mk=mk
+pro magfromdata,data_in,band,mags,e_mags,nwav=nwav,mk=mk
 
 ;INPUT
 ;     DATA_IN    'string' -- Path to fitter datafile containing 2MASS, IRAC,
@@ -11,7 +12,8 @@ pro magfromdata,data_in,band,mags,nwav=nwav,mk=mk
 ;                           on an integer value between 0 and 10. 
 ;
 ;OUTPUT
-;     MAGS     vector[N_SRC] -- Magnitude values of specified BAND.
+;     MAGS     float[N_SRC] -- Magnitude values of specified BAND.
+;     E_MAGS     float[N_SRC] -- Uncertainties on MAGS
 ;
 ;KEYWORDs
 ;     NWAV=    integer  -- Specifies number of bands used in DATA_IN
@@ -33,9 +35,11 @@ pro magfromdata,data_in,band,mags,nwav=nwav,mk=mk
 ;  standard formatting
 ; * Updated magnitude zero-points for more precise
 ; * Removed histogram plotting functionality and associated keywords. 
+; * Added E_MAGS output  -- 3 May 2019
+ 
   
 if n_params() lt 3 then begin
-   print,'syntax: magfromdata, data_in, band, mags, nwav=, /mk'
+   print,'syntax: magfromdata, data_in, band, mags, e_mags, nwav=[10], /mk'
    return
 endif
 
@@ -49,18 +53,18 @@ endif
   
 ;NAMES of selectable bands
       ;NOTE: Zero-point fluxes for ZYJHK(s) are taken from Table 3 of Pickles & Depagne (2010, PASP, 122, 1437), for Spitzer IRAC/MIPS we use IPAC values.
-  if nwav le 10 then begin
+  if nwav le 11 then begin
 ;                  0   1   2     3   4   5       6       7     8        9       10
      bandnames = ['J','H','Ks','2J','2H','2Ks','[3.6]','[4.5]','[5.8]','[8.0]','[24]']
-     zerof = [1577.,1050.,674.9,1577.,1050.,674.9,280.9,179.7,115.0,64.13,7.17]
+     zerof = 1.d3*[1577.,1050.,674.9,1577.,1050.,674.9,280.9,179.7,115.0,64.13,7.17]
      if keyword_set(mk) then begin
         bandnames[2] = 'K'
-        zerof[0:2] = [1531,1006.,663.1]
+        zerof[0:2] = 1.d3*[1531,1006.,663.1]
      endif 
   endif else begin
 ;                 0   1    2   3   4    5    6     7     8        9      10      11     12
      bandnames = ['Z','Y','J','H','Ks','2J','2H','2Ks','[3.6]','[4.5]','[5.8]','[8.0]','[24]']
-     zerof = [2128.,2072.,1577.,1050.,674.9,1577.,1050.,674.9,280.9,179.7,115.0,64.13,7.17]
+     zerof = 1.d3*[2128.,2072.,1577.,1050.,674.9,1577.,1050.,674.9,280.9,179.7,115.0,64.13,7.17]
      if keyword_set(mk) then begin
         bandnames[4] = 'K'
         zerof[2:4] = [1531,1006.,663.1]
@@ -107,7 +111,7 @@ endif
            format='A,F,F,I,I,I,I,I,I,I,I,I,I,I,I,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F', $
            ff1,ff2,ff3,ff4,ff5,ff6,ff7,ff8,ff9,ff10,ff11,ff12, $
            f1,df1,f2,df2,f3,df3,f4,df4,f5,df5,f6,df6,f7,df7,f8,df8,f9,df9,f10,df10,f11,df11,f12,df12 
-        flag = [[ff1], [ff2], [ff3], [ff4], [ff5], [ff6], [ff7], [ff8], [ff9], [ff10], [ff11], f[12] ]
+        flag = [[ff1], [ff2], [ff3], [ff4], [ff5], [ff6], [ff7], [ff8], [ff9], [ff10], [ff11], [ff12] ]
         f = [[f1], [f2], [f3], [f4], [f5], [f6], [f7], [f8], [f9], [f10], [f11], [f12] ]
         df = [[df1], [df2], [df3], [df4], [df5], [df6], [df7], [df8], [df9], [df10], [df11], [df12] ]
      end
@@ -144,8 +148,10 @@ endif
   ind_det = where(flag eq 1,nf)
 
   mags = replicate(!VALUES.F_NAN,nlines)
+  e_mags = replicate(!VALUES.F_NAN,nlines)
   mags[ind_det] = -2.5*alog10(f[ind_det]/zerof[band])  
-
+  e_mags[ind_det] = df[ind_det]/f[ind_det]
+  
   print,strtrim(nf,1),'/',strtrim(nlines,1),' sources have detections in the '+bandnames[band]+' bandpass.'
 
 end
