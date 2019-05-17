@@ -114,7 +114,7 @@ Apertures are tricky, but the SED `models_pms` set is aperture-independent, so i
     fit('data_xir', filters, apertures, model_dir_pms, 'xpms.fitinfo', n_data_min=4, extinction_law=extinction, 
     	distance_range=[1.5, 2.] * u.kpc, av_range=[0., 25.], output_format=('F',1))
 
-Split the output into well-fit versus poorly-fit. I *strongly recommend* using chi^2/Ndata = 1 as the cutoff for well-fit models from the `models_pms` set, see Povich et al. (2019).
+Split the output into well-fit versus poorly-fit. Povich et al. (2019) used chi^2/Ndata = 1 as the cutoff for well-fit models from the `models_pms` set, but this was based on 2MASS+GLIMPSE photometry only. If you have deeper photometric data with smaller uncertainties, you may *increase* this goodness-of-fit cutoff, for example setting cpd=5.
 
 **>>>**
   
