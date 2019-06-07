@@ -1,5 +1,5 @@
 # sedfitting-phrds
-Software package for constraining young stellar properties from infrared SED fitting (Povich et al. 2019)
+Software package for constraining young stellar properties from infrared SED fitting ([Povich et al. 2019](https://arxiv.org/abs/1906.01730))
 
 This package currently consists of a custom IDL library (I know, I'm a dinosaur!) and set of data analysis recipes that combine this library with the Python implementation of Tom Robitaille's [sedfitter](https://github.com/astrofrog/sedfitter). 
 
