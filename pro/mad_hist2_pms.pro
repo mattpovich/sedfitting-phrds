@@ -105,10 +105,11 @@ pro mad_hist2_pms, target_dir, agebins, massbins, age_hist, mass_hist, age, age_
   endif 
 
   
-  pdisthrd_pms, target_dir, cumhrd, agebins, massbins, nxbin=nabin, nybin=nmbin, sourcelist=sourcelist, /mad, restrict_ages=restrict_ages, spec_teff_file=spec_teff_file, age_iso=age_iso
+  pdisthrd_pms, target_dir, cumhrd, agebins_tmp, massbins, nxbin=nabin, nybin=nmbin, sourcelist=sourcelist, /mad, restrict_ages=restrict_ages, spec_teff_file=spec_teff_file, age_iso=age_iso
 
+  
 ; Make histogram of stellar mass   
-  if not keyword_set(input_mass) then mass_hist = total(cumhrd,1)
+  if not keyword_set(input_mass) then mass_hist = total(cumhrd,1)  ;Would this cause a bug???
 
 ; Find maximum value of the number of stars per mass bin & over plot Salpeter relation for a loglog plot
    maxn_mass = max(mass_hist,ind_max)    
@@ -118,8 +119,11 @@ pro mad_hist2_pms, target_dir, agebins, massbins, age_hist, mass_hist, age, age_
 
    ; Define histogram of stellar age, omitting high-mass stars
   high_mass = where(massbins GT 8.) 
-  if not keyword_set(input_age) then age_hist = total(cumhrd[*,ind_use:high_mass[0]],2)
- 
+  if not keyword_set(input_age) then begin
+     agebins = agebins_tmp
+     age_hist = total(cumhrd[*,ind_use:high_mass[0]],2)
+  endif
+  
   numstars = total(age_hist)
   numstarsmass = total(mass_hist[ind_use:high_mass[0]])
   
@@ -138,7 +142,7 @@ pro mad_hist2_pms, target_dir, agebins, massbins, age_hist, mass_hist, age, age_
    age = sqrt(agebins[index]*agebins[index+1])
    age_err = (sqrt(agebins[index]*agebins[index+1]) - agebins[index])*(age_offset + 1)
    print, 'Age at break point',age,'+/-',age_err
-     
+
    if age lt 10. then age_format = '(F3.1)' else age_format = '(F4.1)'
 
    if not keyword_set(noplot) then begin
