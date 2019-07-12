@@ -46,7 +46,8 @@ The above command produces a plot of the pHRD in `sourcelist*_composite_HRD_agec
 
 Plot mass and age histograms, finding the best isochrone for the population in the process. This may require interactive selection of the optimal histogram bin to characterize the age distribution. Experiment with adjusting the `mass_offset[12]=` and `age_offset=` keyword values and reviewing the effect on the printed and plotted output of the command below:
 
-  	massage_plots_pms,target_pms,sourcelist=sourcelist,region_name=region_name,mass_offset1=0,mass_offset2=0,age_offset=0
+  	;massage_plots_pms,target_pms,sourcelist=sourcelist,region_name=region_name,mass_offset1=0,mass_offset2=0,age_offset=0
+	mad_hist2_pms,target_pms,sourcelist=sourcelist,region_name=region_name,restrict=3,offset=0,age_offset=0;,mplotmin=0.8
 
 *Explanatory notes:*
 * The above command produces two plots: 
