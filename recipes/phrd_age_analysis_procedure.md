@@ -23,7 +23,19 @@ The SED fitting recipe `sedfitting_procedure_xpms` created a subdirectory `resul
   	sourcelist = 'sourcelist.txt' ;Default name, can be replaced by a subset of the original list.
   	region_name = '<short target name>' ; e.g. 'M17'
 
-Plot the composite pHRD for ALL stars in sourcelist.txt. 
+*Recommended:* Create a subset of only the brighter sources detected at `[4.5]` to use in subsequent analysis. This can be used to mitigate the effects on varying photometric completeness on the derived age distributions, and/or eliminate cool/low mass sources that are not well-modeled by the Kurucz atmospheres.
+
+**IDL>**
+
+	vvv = 0  ;Set to 1 if ZY photometry is present
+	nwav = 10 + 2*vvv
+	band = 7 + 2*vvv  ;Select [4.5] bandpass
+	magfromdata,'data_xpms_noH_good',band,mags,mk=~vvv,nwav=nwav
+    	plothist,mags,/nan,bin=0.5,/ylog
+	magcut = 13.; EXAMPLE ONLY. The plotted luminosity function should be used to define (or refine) MAGCUT 
+	magcut_sourcelist,target_pms,band,magcut,sourcelist_out,sourcelist=sourcelist,mv=~vvv,nwav=nwav
+
+Plot the composite pHRD for ALL stars in `sourcelist`. 
 If pHRDs for individual stars are also desired, set `psplots=3` instead.
 If you are NOT using an X-ray selected source sample, set `restrict=2` instead.
 	
