@@ -31,9 +31,10 @@ The SED fitting recipe `sedfitting_procedure_xpms` created a subdirectory `resul
 	nwav = 10 + 2*vvv
 	band = 7 + 2*vvv  ;Select [4.5] bandpass
 	magfromdata,'data_xpms_noH_good',band,mags,mk=~vvv,nwav=nwav
-    	plothist,mags,/nan,bin=0.5,/ylog
+	plothist,mags,/nan,bin=0.5,/ylog
 	magcut = 13.; EXAMPLE ONLY. The plotted luminosity function should be used to define (or refine) MAGCUT 
-	magcut_sourcelist,target_pms,band,magcut,sourcelist_out,sourcelist=sourcelist,mv=~vvv,nwav=nwav
+	magcut_sourcelist,target_pms,band,magcut,sourcelist_out,sourcelist=sourcelist,mk=~vvv,nwav=nwav
+	sourcelist=sourcelist_out
 
 Plot the composite pHRD for ALL stars in `sourcelist`. 
 If pHRDs for individual stars are also desired, set `psplots=3` instead.
