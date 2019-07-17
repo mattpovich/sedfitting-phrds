@@ -85,6 +85,17 @@ Estimate the maximum reddening in *Av* magnitudes  by comparing the locus
   of stars to the reddening vectors (marked at intervals of *Av* = 5
   mag). Record the maximum value you estimated. *OPTIONAL: estimate and record a minimum Av if this is not zero.*
   
+## NEW in v1.1: Suppress _H_-band in SED fitting
+
+We have discovered that the Kurucz stellar atmospheres used in all of our SED models do not accurately reproduce the H- opacity minimum at 1.65 µm for pre-main-sequence stars with photospheric temperatures in the range of 4000-5000 K. As a workaround, we _strongly recommend_ omitting _H_-band photometry from SED fitting, as follows, (_continuing the previous IDL session's variable definitions_):
+
+**IDL>**
+
+	data_out = 'data_xir_noH'
+	ind_deactivate = [1,4] + shift
+	data_activate,data,data_out,nwav=7,ind_deactivate=ind_deactivate
+	
+  
 ## FIT WITH DISKLESS PMS MODELS
 
 **Preliminary step:** The two extinction laws that I use are packaged in the `ex_law` subdirectory of this repository. Place a copy of `ex_law_gl.par` into your `$TARGET/sedfitter` directory.
@@ -111,7 +122,7 @@ Apertures are tricky, but the SED `models_pms` set is aperture-independent, so i
 
 **>>>**
 
-    fit('data_xir', filters, apertures, model_dir_pms, 'xpms.fitinfo', n_data_min=4, extinction_law=extinction, 
+    fit('data_xir_noH', filters, apertures, model_dir_pms, 'xpms.fitinfo', n_data_min=4, extinction_law=extinction, 
     	distance_range=[1.5, 2.] * u.kpc, av_range=[0., 25.], output_format=('F',1))
 
 Split the output into well-fit versus poorly-fit. Povich et al. (2019) used chi^2/Ndata = 1 as the cutoff for well-fit models from the `models_pms` set, but this was based on 2MASS+GLIMPSE photometry only. If you have deeper photometric data with smaller uncertainties, you may *increase* this goodness-of-fit cutoff, for example setting cpd=2 works well for UKIDSS+GLIMPSE photometry.
