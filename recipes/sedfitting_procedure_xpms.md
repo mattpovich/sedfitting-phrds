@@ -87,7 +87,7 @@ Estimate the maximum reddening in *Av* magnitudes  by comparing the locus
   
 ## NEW in v1.1: Suppress _H_-band in SED fitting
 
-We have discovered that the Kurucz stellar atmospheres used in all of our SED models do not accurately reproduce the H- opacity minimum at 1.65 µm for pre-main-sequence stars with photospheric temperatures in the range of 4000-5000 K. As a workaround, we _strongly recommend_ omitting _H_-band photometry from SED fitting, as follows, (_continuing the previous IDL session's variable definitions_):
+We have discovered that the Kurucz stellar atmospheres used in all of our SED models do not accurately reproduce the H- opacity minimum at 1.65 µm for pre-main-sequence stars with photospheric temperatures in the range of 4000-5000 K. (See [Wing & Jorgensen 2003](https://www.aavso.org/media/jaavso/2016.pdf) for a good introduction to the relationship between _H_-band and H- opacity.) As a workaround, we _strongly recommend_ omitting _H_-band photometry from SED fitting, as follows, (_continuing the previous IDL session's variable definitions_):
 
 **IDL>**
 
