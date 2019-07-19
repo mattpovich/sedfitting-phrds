@@ -158,9 +158,8 @@ Use IDL to make a new fitter data file and SAOImage ds9 regionfile containing on
   	ds9regfromdata,'data_xpms_good','data_xpms_good.reg',color='dodgerblue'
 
   	target_pms ='results_xpms'
-  	pms_pars2idl,parfile_good,target_pms,data_parent='data_xir',filter='F1'	
+  	pms_pars2idl,parfile_good,target_pms,data_parent='data_xir_noH',filter='F1'	
 	
-_NOTE: In the final command above, we pull information from the **original** fitter data file so that the H-band photometry is passed along to the data structures in `results_xpms`. While H-band was not used for SED fitting, it is still useful for subsequent color analysis of the young stellar population._
   
 ## NEXT STEPS:
 
