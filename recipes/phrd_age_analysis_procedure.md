@@ -30,7 +30,7 @@ The SED fitting recipe `sedfitting_procedure_xpms` created a subdirectory `resul
 	vvv = 0  ;Set to 1 if ZY photometry is present
 	nwav = 10 + 2*vvv
 	band = 7 + 2*vvv  ;Select [4.5] bandpass
-	magfromdata,'data_xpms_noH_good',band,mags,mk=~vvv,nwav=nwav
+	magfromdata,'data_xpms_good',band,mags,mk=~vvv,nwav=nwav
 	plothist,mags,/nan,bin=0.5,/ylog
 	magcut = 13.; EXAMPLE ONLY. The plotted luminosity function should be used to define (or refine) MAGCUT 
 	magcut_sourcelist,target_pms,band,magcut,sourcelist_out,sourcelist=sourcelist,mk=~vvv,nwav=nwav
