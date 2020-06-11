@@ -158,7 +158,7 @@ Use IDL to make a new fitter data file and SAOImage ds9 regionfile containing on
   	ds9regfromdata,'data_xpms_good','data_xpms_good.reg',color='dodgerblue'
 
   	target_pms ='results_xpms'
-  	pms_pars2idl,parfile_good,target_pms,data_parent='data_xir_noH',filter='F1'	
+  	pms_pars2idl,parfile_good,target_pms,data_parent='data_xir',filter='F1'	
 	
   
 ## NEXT STEPS:
